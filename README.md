@@ -28,7 +28,7 @@ if ($rebootRequired) {
 ```
 
 ## Use with Dev Drive
-[Dev Drive](https://aka.ms/DevDrive) is a new Windows feature that provides a ReFS filesystem that defaults to disallowing all filter drivers, including PrjFlt needed for ProjFS, to provide faster performance and enable [copy-on-write](https://aka.ms/EngMSDevDrive) capabilities. To use this library on a Dev Drive, Dev Drive configuration must be updated to allow PrjFlt. The command below must be run within an elevated/admin console.
+[Dev Drive](https://aka.ms/DevDrive) is a new Windows feature that provides a ReFS filesystem that defaults to disallowing all filter drivers, including PrjFlt needed for ProjFS, to provide faster performance and enable [copy-on-write](https://aka.ms/EngMSDevDrive) capabilities. To use this library with a virtual root directory on a Dev Drive, Dev Drive configuration must be updated to allow PrjFlt. The command below must be run within an elevated/admin console.
 
 ```powershell
 fsutil devdrv query
