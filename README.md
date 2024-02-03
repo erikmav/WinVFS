@@ -2,6 +2,9 @@ This project provides a .NET library to allow creating a virtual filesystem (VFS
 
 The VFS requires the service process to be running at all times to accept kernel requests for information about the VFS contents. For a production system this would mean starting the service process automatically on Windows start, typically by running the executable as a Windows service (the equivalent of a daemon on *nix).
 
+## `IVfsCallbacks` Plugins
+[IVfsCallbacks.cs](./Lib/IVfsCallbacks.cs) contains the interface a VFS plugin would use to answer questions from the library. It explicitly implements a two-phase lookup for directory metadata with the assumption of a fast local cache of directory information and a slower async call to retrieve directory information from a remote source like a cloud service. Retrieving a file is always assumed to be async. There are two sample implementations of this interface, one in [WinVFSServiceProgram.cs](./Service/WinVFSServiceProgram.cs) that mirrors a source directory tree into the VFS root, and another in [VfsIntegrationTests.cs](./Tests/VfsIntegrationTests.cs) used for verifying behavior.
+
 ## ProjFS Installation
 Use of the library and sample service require turning on the `Windows Projected File System` Windows feature to install the `PrjFlt` kernel driver and the related user-mode API library. You can install either through the Windows Features dialog box, or in an elevated/admin PowerShell with the following command:
 

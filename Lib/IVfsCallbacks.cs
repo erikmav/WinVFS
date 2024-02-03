@@ -53,11 +53,13 @@ public interface IVfsCallbacks
     ValueTask<Stream> GetFileAsync(string virtualRelativePath, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Called on an unrecoverable error. This should result in a general failure in this virtualization session.
+    /// Called on an unrecoverable error, typically an unhandled exception thrown from a callback or
+    /// another exception from within the virtualization core or ProjFS itself.
+    /// This should result in a general failure in this virtualization session.
     /// </summary>
     /// <param name="exception">
-    /// A related exception containing information about the failure. The exception's Message property contains a summary of
-    /// the problem, and typically there will be an InnerException containing more detail.
+    /// A related exception containing information about the failure. The exception's Message property
+    /// contains a summary of the problem, and typically there will be an InnerException containing more detail.
     /// </param>
     void FatalErrorOccurred(Exception exception);
 }
