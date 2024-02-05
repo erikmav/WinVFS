@@ -27,6 +27,10 @@ jobs:
           Set-StrictMode -Version latest
           $ErrorActionPreference = "Stop"
 
+          Write-Host "Installing ProjFS..."
           enable-WindowsOptionalFeature -online -featurename client-projfs
+
+          Write-Host ""
+          Write-Host "Running tests"
           dotnet test --no-build --configuration Release
         shell: powershell
