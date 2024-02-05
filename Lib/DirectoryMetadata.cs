@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WinVfs.VirtualFilesystem;
 
-namespace WinVfs.Service;
+namespace WinVfs.VirtualFilesystem;
 
-internal sealed class DirectoryMetadata : IDirectoryMetadata
+/// <summary>
+/// Default implementation of <see cref="IDirectoryMetadata"/> with an O(N) lookup in <see cref="GetEntryOrNull"/>
+/// and a non-thread-safe writeable collection of entries.
+/// </summary>
+public sealed class DirectoryMetadata : IDirectoryMetadata
 {
     public DirectoryMetadata(string relativeBasePath, bool exists = true)
     {

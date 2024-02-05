@@ -1,9 +1,11 @@
-using System;
-using WinVfs.VirtualFilesystem;
+﻿using System;
 
-namespace WinVfs.Tests;
+namespace WinVfs.VirtualFilesystem;
 
-internal sealed class FileSystemEntry : IFileSystemEntry
+/// <summary>
+/// Default implementation of <see cref="IFileSystemEntry"/>
+/// </summary>
+public sealed class FileSystemEntry : IFileSystemEntry
 {
     public FileSystemEntry(string dirName)
     {
