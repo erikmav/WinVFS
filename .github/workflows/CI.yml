@@ -1,1 +1,32 @@
-# Placeholder
+# GitHub Actions definition for CI build.
+
+name: CI Build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  WinBuildTest:
+    name: Windows build and test
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        # No "with: dotnet-version" specified -> use global.json
+      - run: dotnet restore
+      - run: dotnet build --configuration Release --no-restore
+      - name: Install ProjFS feature and run tests
+        run: |
+          enable-WindowsOptionalFeature -online -featurename client-projfs
+          if not '%ERRORLEVEL%' == '0' do (
+              echo ERROR: Failed to install ProjFS with errorlevel %ERRORLEVEL%
+              exit /b 1
+          )
+
+          dotnet test --no-build
+        shell: cmd
