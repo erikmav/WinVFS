@@ -26,5 +26,5 @@ jobs:
           $ErrorActionPreference = "Stop"
 
           enable-WindowsOptionalFeature -online -featurename client-projfs
-          dotnet test --no-build
+          dotnet test --no-build --configuration Release
         shell: powershell
