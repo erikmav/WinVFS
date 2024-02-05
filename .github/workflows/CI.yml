@@ -22,11 +22,9 @@ jobs:
       - run: dotnet build --configuration Release --no-restore
       - name: Install ProjFS feature and run tests
         run: |
-          enable-WindowsOptionalFeature -online -featurename client-projfs
-          if not '%ERRORLEVEL%' == '0' do (
-              echo ERROR: Failed to install ProjFS with errorlevel %ERRORLEVEL%
-              exit /b 1
-          )
+          Set-StrictMode -Version latest
+          $ErrorActionPreference = "Stop"
 
+          enable-WindowsOptionalFeature -online -featurename client-projfs
           dotnet test --no-build
-        shell: cmd
+        shell: powershell
