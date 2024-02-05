@@ -14,6 +14,9 @@ using Microsoft.Windows.ProjFS;
 
 namespace WinVfs.VirtualFilesystem;
 
+/// <summary>
+/// Creates and manages a ProjFS virtual filesystem session.
+/// </summary>
 public sealed class ProjFsVirtualizationSession : IDisposable
 {
     const long DirectorySize = -1; // File size used for directory placeholders
@@ -44,7 +47,7 @@ public sealed class ProjFsVirtualizationSession : IDisposable
     private readonly ProjFsCallbackHandler _projFsCallbackHandler;
 
     /// <summary>
-    /// Constructs and starts a projFS virtualization session centered on a directory.
+    /// Constructs and starts a ProjFS virtualization session centered on a directory.
     /// </summary>
     /// <param name="virtualizationRootDir">The full path to the root directory.</param>
     /// <param name="callbacks">Callbacks required to answer virtualization queries.</param>
@@ -163,6 +166,10 @@ public sealed class ProjFsVirtualizationSession : IDisposable
         _projFsCallbackHandler.Dispose();
     }
 
+    /// <summary>
+    /// Gets the current statistics for this instance. The object is not cloned as a snapshot,
+    /// meaning the stats will continue to be updated.
+    /// </summary>
     public ProjFsStats Stats { get; } = new();
 
     /// <summary>
@@ -231,7 +238,7 @@ public sealed class ProjFsVirtualizationSession : IDisposable
         }
     }
 
-    public void CreateFilePlaceholder(string virtualRelativePath, IFileSystemEntry entry)
+    private void CreateFilePlaceholder(string virtualRelativePath, IFileSystemEntry entry)
     {
 #if DEBUG
         if (entry.IsDirectory)
@@ -243,7 +250,7 @@ public sealed class ProjFsVirtualizationSession : IDisposable
         CreatePlaceholder(virtualRelativePath, entry, FileAttr, entry.FileSize);
     }
 
-    public void CreateDirPlaceholder(string virtualRelativePath, IFileSystemEntry entry)
+    private void CreateDirPlaceholder(string virtualRelativePath, IFileSystemEntry entry)
     {
 #if DEBUG
         if (!entry.IsDirectory)
@@ -310,7 +317,7 @@ public sealed class ProjFsVirtualizationSession : IDisposable
     /// <summary>
     /// Creates a ProjFS placeholder (reparse point) in the filesystem within an existing directory.
     /// </summary>
-    public void CreatePlaceholder(string virtualRelativeEntryPath, IFileSystemEntry entry, FileAttributes attributes, long endOfFile)
+    private void CreatePlaceholder(string virtualRelativeEntryPath, IFileSystemEntry entry, FileAttributes attributes, long endOfFile)
         => CreatePlaceholder(_projFs, virtualRelativeEntryPath, entry, _sessionStartTimeUtc, attributes, endOfFile, _logger);
 
     /// <summary>
@@ -320,7 +327,7 @@ public sealed class ProjFsVirtualizationSession : IDisposable
     /// them before starting virtualization, then calling this method to activate them within the VFS.
     /// </summary>
     /// <param name="virtualRelativePath">The directory path relative to the virtual root.</param>
-    public void MarkRealDirectoryAsMaterializedPlaceholder(string virtualRelativePath)
+    internal void MarkRealDirectoryAsMaterializedPlaceholder(string virtualRelativePath)
     {
         if (virtualRelativePath.Length == 0)
         {

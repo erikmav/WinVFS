@@ -2,6 +2,9 @@
 
 namespace WinVfs.VirtualFilesystem;
 
+/// <summary>
+/// The exception used when a fatal exception was encountered.
+/// </summary>
 public sealed class VirtualFilesystemException : Exception
 {
     public VirtualFilesystemException()
